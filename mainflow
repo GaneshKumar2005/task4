@@ -1,0 +1,134 @@
+npx create-react-app todo-list-app
+cd todo-list-app
+npm start
+// src/ToDoList.js
+import React, { useState } from 'react';
+import './ToDoList.css';
+
+function ToDoList() {
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState('');
+
+  const addTask = () => {
+    if (newTask.trim() !== '') {
+      setTasks([...tasks, { text: newTask, completed: false }]);
+      setNewTask('');
+    }
+  };
+
+  const completeTask = (index) => {
+    const updatedTasks = tasks.map((task, i) =>
+      i === index ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+  };
+
+  const deleteTask = (index) => {
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  };
+
+  return (
+    <div className="todo-list">
+      <h1>To-Do List</h1>
+      <input
+        type="text"
+        value={newTask}
+        onChange={(e) => setNewTask(e.target.value)}
+        placeholder="Add a new task"
+      />
+      <button onClick={addTask}>Add Task</button>
+      <ul>
+        {tasks.map((task, index) => (
+          <li key={index} className={task.completed ? 'completed' : ''}>
+            <span onClick={() => completeTask(index)}>{task.text}</span>
+            <button onClick={() => deleteTask(index)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default ToDoList;
+/* src/ToDoList.css */
+.todo-list {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.todo-list h1 {
+  margin-bottom: 20px;
+}
+
+.todo-list input {
+  width: calc(100% - 80px);
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.todo-list button {
+  padding: 10px;
+  border: none;
+  background-color: #28a745;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo-list button:hover {
+  background-color: #218838;
+}
+
+.todo-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.todo-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.todo-list li.completed span {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.todo-list li button {
+  background-color: #dc3545;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo-list li button:hover {
+  background-color: #c82333;
+}
+// src/App.js
+import React from 'react';
+import './App.css';
+import ToDoList from './ToDoList';
+
+function App() {
+  return (
+    <div className="App">
+      <ToDoList />
+    </div>
+  );
+}
+
+export default App;
+npm start
+
+
